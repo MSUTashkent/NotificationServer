@@ -1,4 +1,5 @@
 #include "notificationclient.h"
+#include "magic.h"
 
 QTcpSocket *TNotificationClient::getSocket(){
 	if(sock==0){
@@ -25,20 +26,26 @@ TNotificationClient::TNotificationClient(QString &serverHostname, quint16 server
 	connect(this,SIGNAL(notificationCame()),this,SLOT(handleNotification()));
 }
 
-void TNotificationClient::exec(){
+void TNotificationClient::newDataAvailable(){
 	quint64 piece;
+	if(sock->read((char*)&piece,sizeof(piece))){
+		if(piece==MAGIC){
+			Q_EMIT notificationCame();
+		}
+	}
+}
+
+void TNotificationClient::run(){
 	if(serverHostname.isEmpty()){
 		return;
 	}
-	while(true){
-		if(sock==0){
-			getSocket();
+	if(sock==0){
+		getSocket();
+		if(sock->isValid()){
 			connect(sock,SIGNAL(disconnected()),this,SLOT(socketClosed()));
+			connect(sock,SIGNAL(readyRead()),this,SLOT(newDataAvailable()));
 		}
-		if(sock->read((char*)&piece,sizeof(piece))){
-			if(piece==MAGIC){
-				Q_EMIT notificationCame();
-			}
-		}
+		
 	}
+	exec();
 }

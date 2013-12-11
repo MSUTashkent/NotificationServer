@@ -4,14 +4,14 @@
 
 TEMPLATE = app
 TARGET = NotifierService
-DESTDIR = ./Debug Client
+DESTDIR = ./Debug
 QT += core network
 CONFIG += debug console
 DEFINES += QT_LARGEFILE_SUPPORT QT_NETWORK_LIB
-INCLUDEPATH += ./GeneratedFiles/Debug Client
+INCLUDEPATH += ./GeneratedFiles/Debug
 DEPENDPATH += .
-MOC_DIR += ./GeneratedFiles/debug client
-OBJECTS_DIR += debug client
+MOC_DIR += ./GeneratedFiles/debug
+OBJECTS_DIR += debug
 UI_DIR += ./GeneratedFiles
 RCC_DIR += ./GeneratedFiles
 include(NotifierService.pri)

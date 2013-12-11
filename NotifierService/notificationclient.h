@@ -3,11 +3,9 @@
 
 #include <QTcpSocket>
 #include <QString>
-#include <QObject>
+#include <QThread>
 
-#include "magic.h"
-
-class TNotificationClient : public QObject {
+class TNotificationClient : public QThread {
 	Q_OBJECT
 
 	QTcpSocket *sock;
@@ -18,12 +16,13 @@ class TNotificationClient : public QObject {
 
 	Q_SLOT void handleNotification();
 	Q_SLOT void socketClosed();
+	Q_SLOT void newDataAvailable();
 
 public:
 	Q_SIGNAL void notificationCame();
 
 	TNotificationClient(QString &serverHostname, quint16 serverPort);
-	void exec();
+	void run();
 };
 
 inline void notify(){
