@@ -1,0 +1,6 @@
+global:
+*.user
+*.ncb
+*.suo
+msuIM\Debug\*
+msuIM\Release\*
